@@ -1,7 +1,3 @@
-/*******************************************************************************
- * SERVIDOR no porto 9000, à escuta de novos clientes.  Quando surjem
- * novos clientes os dados por eles enviados são lidos e descarregados no ecran.
- *******************************************************************************/
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -44,7 +40,7 @@ bool checkCredentials(char *username, char *password);
 
 
 int main(){
-  system("clear");
+  printf("\e[1;1H\e[2J");
   printf("ChatRC Main Server\n");
   int fd, client;
   struct sockaddr_in addr, client_addr;
@@ -296,6 +292,11 @@ bool checkCredentials(char *username, char *password) {
 
     fclose(file);
     return false;
+}
+
+void erro(char *msg){
+  printf("Error: %s\n", msg);
+  exit(-1);
 }
 
 void erro(char *msg){
