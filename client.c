@@ -1,3 +1,8 @@
+/*************************************************************
+ * CLIENTE liga ao servidor (definido em argv[1]) no porto especificado
+ * (em argv[2]), escrevendo a palavra predefinida (em argv[3]).
+ * USO: >cliente <enderecoServidor>  <porto> 
+ *************************************************************/
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -19,18 +24,24 @@ void sendString(int fd, char *msg);
 char *receiveString(int fd);
 
 int main(int argc, char *argv[]){
+  system("clear"); 
   int fd = serverConnection(argc, argv);
   char *msgReceived = NULL;
   char msgToSend[BUF_SIZE];
 
+  sleep(3);
+  system("clear"); 
+
   while(msgReceived == NULL || strcmp(msgReceived, "\nUntil next time! Thanks for chattingRC with us :)\n") != 0){
     free(msgReceived);
     msgReceived = receiveString(fd);
+    if(strcmp(msgReceived, "\nUntil next time! Thanks for chattingRC with us :)\n")==0)break;
     fgets(msgToSend, sizeof(msgToSend), stdin);
-    sendString(fd, msgToSend);
+    sendString(fd, msgToSend); 
     fflush(stdout);
   }
-
+  sleep(3);
+  system("clear"); 
   close(fd);
   exit(0);
 }
@@ -55,7 +66,7 @@ int serverConnection(int argc, char *argv[]){
 
   bool connection_success = true;
   if ((fd = socket(AF_INET, SOCK_STREAM, 0)) == -1){
-    erro("socket");
+    erro("Socket");
     connection_success = false;
   }
   if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0){
@@ -84,10 +95,9 @@ char *receiveString(int fd){
   buffer[nread] = '\0';
   string = (char *)malloc(strlen(buffer) + 1);
   strcpy(string, buffer);
+  if(string[0]=='\n')system("clear");
   printf("%s", string);
-
   fflush(stdout);
-
   return string;
 }
 

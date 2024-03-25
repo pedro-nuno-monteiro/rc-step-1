@@ -1,3 +1,7 @@
+/*******************************************************************************
+ * SERVIDOR no porto 9000, à escuta de novos clientes.  Quando surjem
+ * novos clientes os dados por eles enviados são lidos e descarregados no ecran.
+ *******************************************************************************/
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -34,12 +38,14 @@ void signupMenu(int client_fd);
 void loginMenu(int client_fd);
 void conversationsMenu(int client_fd, const User user);
 
-int create_user(char *username, char *password);
+void create_user(char *username, char *password);
 bool checkDuplicateUsername(char *username);
 bool checkCredentials(char *username, char *password);
 
 
 int main(){
+  system("clear");
+  printf("ChatRC Main Server\n");
   int fd, client;
   struct sockaddr_in addr, client_addr;
   int client_addr_size;
@@ -118,7 +124,7 @@ void mainMenu(int client_fd){
       }
     }
     else {
-      sendString(client_fd, "INVALID SELECTION, please press 1, 2 or 3!\n");
+      sendString(client_fd, "\nINVALID SELECTION, please press 1, 2 or 3! (Press ENTER to continue...)\n");
       receiveString(client_fd);
     }
   }
@@ -128,7 +134,7 @@ void signupMenu(int client_fd){
   bool leave_menu = false;
   while(!leave_menu){
     char username[50]; 
-    sendString(client_fd, "\n\nSign up for chatRC (Press ENTER to return)\n\nusername: ");
+    sendString(client_fd, "\nSign up for chatRC (Press ENTER to return)\n\nusername: ");
     strcpy(username, receiveString(client_fd));
     if (strcmp(username, "\n") != 0) {
       if (checkDuplicateUsername(username)){
@@ -160,7 +166,7 @@ void loginMenu(int client_fd){
   bool leave_menu = false;
   while(!leave_menu){
     char username[50]; 
-    sendString(client_fd, "\n\nLog in chatRC (Press ENTER to return)\n\nusername: ");
+    sendString(client_fd, "\nLog in chatRC (Press ENTER to return)\n\nusername: ");
     strcpy(username, receiveString(client_fd));
     if (strcmp(username, "\n") != 0) {
       char password[50]; 
@@ -185,6 +191,9 @@ void loginMenu(int client_fd){
         }
       }
     }
+    else{ 
+     leave_menu = true;
+    }
   }
 }
 
@@ -206,9 +215,13 @@ void conversationsMenu(int client_fd, const User user){
         receiveString(client_fd);
         selection = -1;
       }
+      if (selection == 3){
+        sendString(client_fd, "\nReturning to Main Menu! (Press ENTER to continue...)\n");
+        receiveString(client_fd);
+      }
     }
     else {
-      sendString(client_fd, "INVALID SELECTION, please press 1, 2 or 3! (Press ENTER to continue...)\n");
+      sendString(client_fd, "\nINVALID SELECTION, please press 1, 2 or 3! (Press ENTER to continue...)\n");
       receiveString(client_fd);
     }
   }
@@ -234,7 +247,7 @@ bool checkDuplicateUsername(char *username) {
     return false;
 }
 
-int create_user(char *username, char *password){
+void create_user(char *username, char *password){
   FILE *file = fopen("users.bin", "ab");
     if (file == NULL) {
         file = fopen("users.bin", "wb");
