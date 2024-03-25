@@ -1,8 +1,3 @@
-/*************************************************************
- * CLIENTE liga ao servidor (definido em argv[1]) no porto especificado
- * (em argv[2]), escrevendo a palavra predefinida (em argv[3]).
- * USO: >cliente <enderecoServidor>  <porto> 
- *************************************************************/
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -24,13 +19,13 @@ void sendString(int fd, char *msg);
 char *receiveString(int fd);
 
 int main(int argc, char *argv[]){
-  system("clear"); 
+  printf("\e[1;1H\e[2J"); 
   int fd = serverConnection(argc, argv);
   char *msgReceived = NULL;
   char msgToSend[BUF_SIZE];
 
   sleep(3);
-  system("clear"); 
+  printf("\e[1;1H\e[2J"); 
 
   while(msgReceived == NULL || strcmp(msgReceived, "\nUntil next time! Thanks for chattingRC with us :)\n") != 0){
     free(msgReceived);
@@ -41,7 +36,7 @@ int main(int argc, char *argv[]){
     fflush(stdout);
   }
   sleep(3);
-  system("clear"); 
+  printf("\e[1;1H\e[2J"); 
   close(fd);
   exit(0);
 }
@@ -52,7 +47,7 @@ int serverConnection(int argc, char *argv[]){
   struct hostent *hostPtr;
 
   if (argc != 3){
-    printf("cliente <host> <port>\n");
+    printf("client <host> <port>\n");
     fflush(stdout);
     exit(-1);
   }
@@ -95,7 +90,7 @@ char *receiveString(int fd){
   buffer[nread] = '\0';
   string = (char *)malloc(strlen(buffer) + 1);
   strcpy(string, buffer);
-  if(string[0]=='\n')system("clear");
+  if(string[0]=='\n')printf("\e[1;1H\e[2J");
   printf("%s", string);
   fflush(stdout);
   return string;
