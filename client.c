@@ -1,8 +1,3 @@
-/*************************************************************
- * CLIENTE liga ao servidor (definido em argv[1]) no porto especificado
- * (em argv[2]), escrevendo a palavra predefinida (em argv[3]).
- * USO: >cliente <enderecoServidor>  <porto>  <Palavra>
- *************************************************************/
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>

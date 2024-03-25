@@ -1,7 +1,3 @@
-/*******************************************************************************
- * SERVIDOR no porto 9000, à escuta de novos clientes.  Quando surjem
- * novos clientes os dados por eles enviados são lidos e descarregados no ecran.
- *******************************************************************************/
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
@@ -104,8 +100,7 @@ char *receiveString(int client_fd){
 void mainMenu(int client_fd){
   int selection = -1;
   while(selection != 3){
-    char *string = "\nWELCOME TO chatRC\n\n1. Sign Up\n2. Log in\n3. Exit\n\nSelection: ";
-    sendString(client_fd, string);
+    sendString(client_fd, "\nWELCOME TO chatRC\n\n1. Sign Up\n2. Log in\n3. Exit\n\nSelection: ");
     selection = atoi(receiveString(client_fd));
     if (selection == 1 || selection == 2 || selection == 3){
       if (selection == 1){
@@ -119,8 +114,7 @@ void mainMenu(int client_fd){
         continue;
       }
       if (selection == 3){
-        string = "\nUntil next time! Thanks for chattingRC with us :)\n";
-        sendString(client_fd, string);
+        sendString(client_fd, "\nUntil next time! Thanks for chattingRC with us :)\n");
       }
     }
     else {
@@ -133,20 +127,17 @@ void mainMenu(int client_fd){
 void signupMenu(int client_fd){
   bool leave_menu = false;
   while(!leave_menu){
-    char *string = "\n\nSign up for chatRC (Press ENTER to return)\n\nusername: ";
     char username[50]; 
-    sendString(client_fd, string);
+    sendString(client_fd, "\n\nSign up for chatRC (Press ENTER to return)\n\nusername: ");
     strcpy(username, receiveString(client_fd));
     if (strcmp(username, "\n") != 0) {
       if (checkDuplicateUsername(username)){
-        string = "\nusername already exists (Press ENTER to continue...)\n";
-        sendString(client_fd, string);
+        sendString(client_fd, "\nusername already exists (Press ENTER to continue...)\n");
         receiveString(client_fd);
       }
       else{
         char password[50]; 
-        string = "password: ";
-        sendString(client_fd, string);
+        sendString(client_fd, "password: ");
         strcpy(password, receiveString(client_fd));
         if (strcmp(password, "\n") == 0){
           leave_menu = false;
@@ -154,8 +145,7 @@ void signupMenu(int client_fd){
         }
         else{
           create_user(username, password);
-          string = "\nUser created successfully!!! (Press ENTER to continue...)\n";
-          sendString(client_fd, string);
+          sendString(client_fd, "\nUser created successfully!!! (Press ENTER to continue...)\n");
           receiveString(client_fd);
           leave_menu = true;
         }
@@ -169,22 +159,19 @@ void signupMenu(int client_fd){
 void loginMenu(int client_fd){
   bool leave_menu = false;
   while(!leave_menu){
-    char *string = "\n\nLog in chatRC (Press ENTER to return)\n\nusername: ";
     char username[50]; 
-    sendString(client_fd, string);
+    sendString(client_fd, "\n\nLog in chatRC (Press ENTER to return)\n\nusername: ");
     strcpy(username, receiveString(client_fd));
     if (strcmp(username, "\n") != 0) {
       char password[50]; 
-      string = "password: ";
-      sendString(client_fd, string);
+      sendString(client_fd, "password: ");
       strcpy(password, receiveString(client_fd));
       if (strcmp(password, "\n") == 0){
         leave_menu = true;
       }
       else{
         if(checkCredentials(username, password)){
-          string = "\nLogged in successfully!!! (Press ENTER to continue...)\n";
-          sendString(client_fd, string);
+          sendString(client_fd, "\nLogged in successfully!!! (Press ENTER to continue...)\n");
           receiveString(client_fd);
           User user;
           strcpy(user.username, username);
@@ -193,8 +180,7 @@ void loginMenu(int client_fd){
           leave_menu = true;
         }
         else{
-          string = "\nWrong username or password (Press ENTER to continue...)\n";
-          sendString(client_fd, string);
+          sendString(client_fd, "\nWrong username or password (Press ENTER to continue...)\n");
           receiveString(client_fd);
         }
       }
