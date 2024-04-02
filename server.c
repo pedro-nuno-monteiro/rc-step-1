@@ -10,7 +10,7 @@
 #include <sys/wait.h>
 #include <ctype.h>
 
-#define SERVER_PORT 9001
+#define SERVER_PORT 9000
 #define BUF_SIZE 1024
 #define MAX_USERS 20
 
