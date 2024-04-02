@@ -10,7 +10,7 @@
 #include <sys/wait.h>
 #include <ctype.h>
 
-#define SERVER_PORT 9000
+#define SERVER_PORT 9001
 #define BUF_SIZE 1024
 #define MAX_USERS 20
 
@@ -95,7 +95,7 @@ char *receiveString(int client_fd){
   strcpy(string, buffer);
   fflush(stdout);
 
-  //printf("Received from client %d: %s", client_fd, string);
+  printf("Received from client %d: %s", getpid(), string);
 
   return string;
 }
