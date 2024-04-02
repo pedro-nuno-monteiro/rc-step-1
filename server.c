@@ -93,8 +93,9 @@ char *receiveString(int client_fd){
   buffer[nread] = '\0';
   string = (char *)malloc(strlen(buffer) + 1);
   strcpy(string, buffer);
-
   fflush(stdout);
+
+  //printf("Received from client %d: %s", client_fd, string);
 
   return string;
 }
@@ -299,7 +300,3 @@ void erro(char *msg){
   exit(-1);
 }
 
-void erro(char *msg){
-  printf("Error: %s\n", msg);
-  exit(-1);
-}
