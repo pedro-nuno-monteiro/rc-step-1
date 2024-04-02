@@ -203,12 +203,12 @@ void conversationsMenu(int client_fd, const User user){
     selection = atoi(receiveString(client_fd));
     if (selection == 1 || selection == 2 || selection == 3){
       if (selection == 1){
-        sendString(client_fd, "\nThis feature is currently under development. Stay tuned for updates!\n");
+        sendString(client_fd, "\nThis feature is currently under development. Stay tuned for updates! (Press ENTER to continue...)\n");
         receiveString(client_fd);
         selection = -1;
       }
       if (selection == 2){
-        sendString(client_fd, "\nThis feature is currently under development. Stay tuned for updates!\n");
+        sendString(client_fd, "\nThis feature is currently under development. Stay tuned for updates! (Press ENTER to continue...)\n");
         receiveString(client_fd);
         selection = -1;
       }
